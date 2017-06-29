@@ -77,11 +77,18 @@ module JavaBuildpack
 
       commands = []
       commands << component_detection('JRE', @jres, true).first.release
+	  
+	  @logger.info { "Command: \n#{commands}" }
 
       component_detection('framework', @frameworks, false).map(&:release)
 
       commands << container.release
+	  
+	  @logger.info { "Command: \n#{commands}" }
+	  
       command = commands.flatten.compact.join(' && ')
+	  
+	  @logger.info { "Command: \n#{command}" }
 
       payload = {
         'addons'                => [],
