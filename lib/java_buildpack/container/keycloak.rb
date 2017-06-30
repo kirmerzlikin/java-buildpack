@@ -35,6 +35,7 @@ module JavaBuildpack
       # @param [Hash] context a collection of utilities used the component
       def initialize(context)
         @logger        = JavaBuildpack::Logging::LoggerFactory.instance.get_logger Keycloak
+        super(context)
       end
 
       def detect
