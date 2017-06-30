@@ -35,6 +35,14 @@ module JavaBuildpack
         @logger        = JavaBuildpack::Logging::LoggerFactory.instance.get_logger Keycloak
       end
 
+      def detect
+        supports? ? 'Keycloak detected. OK' : nil
+      end
+
+      def supports?
+        true
+      end
+
       # (see JavaBuildpack::Component::BaseComponent#compile)
       def compile
         @logger.info { 'Nothing to do' }
