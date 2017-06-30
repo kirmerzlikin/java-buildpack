@@ -60,7 +60,9 @@ module JavaBuildpack
           @droplet.java_home.as_env_var,
           @droplet.java_opts.as_env_var,
           'exec',
-          qualify_path(@droplet.root + 'bin/standalone.sh', @droplet.root)
+          qualify_path(@droplet.root + 'bin/standalone.sh', @droplet.root),
+          '-b',
+          '0.0.0.0'
         ].flatten.compact.join(' ')
       end
 
