@@ -55,7 +55,6 @@ module JavaBuildpack
       def release
         [
           @droplet.java_home.as_env_var,
-          'exec',
           qualify_path(@droplet.root + 'bin/standalone.sh', @droplet.root)
         ].flatten.compact.join(' ')
       end
