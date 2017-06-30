@@ -60,9 +60,7 @@ module JavaBuildpack
 
       container = component_detection('container', @containers, true).first
       no_container unless container
-
       component_detection('JRE', @jres, true).first.compile
-      component_detection('framework', @frameworks, false).each(&:compile)
 
       container.compile
     end
@@ -77,23 +75,14 @@ module JavaBuildpack
 
       commands = []
       commands << component_detection('JRE', @jres, true).first.release
-	  
-	  @logger.info { "Command: \n#{commands}" }
-
-      component_detection('framework', @frameworks, false).map(&:release)
 
       commands << container.release
-	  
-	  @logger.info { "Command: \n#{commands}" }
-	  
       command = commands.flatten.compact.join(' && ')
-	  
-	  @logger.info { "Command: \n#{command}" }
 
       payload = {
         'addons'                => [],
         'config_vars'           => {},
-        'default_process_types' => { 'web' => command, 'task' => command }
+        'default_process_types' => { 'web' => command }
       }.to_yaml
 
       @logger.debug { "Release Payload:\n#{payload}" }

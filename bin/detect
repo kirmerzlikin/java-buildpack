@@ -20,13 +20,4 @@ $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
 
 require 'java_buildpack/buildpack'
 
-build_dir = ARGV[0]
-
-components = JavaBuildpack::Buildpack.with_buildpack(build_dir, 'Detect failed with exception %s', &:detect).compact
-
-if components.empty?
-  abort
-else
-  str = components.join(' ')
-  puts str.length > 255 ? str.slice(0..251) + '...' : str
-end
+exit 0
