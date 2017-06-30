@@ -28,6 +28,8 @@ module JavaBuildpack
   module Container
 
     class Keycloak < JavaBuildpack::Component::BaseComponent
+      include JavaBuildpack::Util
+      
       # Creates an instance
       #
       # @param [Hash] context a collection of utilities used the component
@@ -50,12 +52,10 @@ module JavaBuildpack
 
       # (see JavaBuildpack::Component::BaseComponent#release)
       def release
-        add_libs
-
         [
           @droplet.java_home.as_env_var,
           'exec',
-          qualify_path('bin/standalone.sh', @droplet.root)
+          qualify_path(Pathname.new('bin/standalone.sh'), @droplet.root)
         ].flatten.compact.join(' ')
       end
 
