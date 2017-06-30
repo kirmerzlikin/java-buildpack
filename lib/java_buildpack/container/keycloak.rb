@@ -53,8 +53,13 @@ module JavaBuildpack
 
       # (see JavaBuildpack::Component::BaseComponent#release)
       def release
+        @droplet.java_opts.add_system_property 'jboss.http.port', '$PORT'
+
         [
+          @droplet.environment_variables.as_env_vars,
           @droplet.java_home.as_env_var,
+          @droplet.java_opts.as_env_var,
+          'exec',
           qualify_path(@droplet.root + 'bin/standalone.sh', @droplet.root)
         ].flatten.compact.join(' ')
       end
