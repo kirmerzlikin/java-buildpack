@@ -38,7 +38,10 @@ module JavaBuildpack
       # @param [String] key the variable name
       # @param [String] value the variable value
       # @return [EnvironmentVariables] +self+ for chaining
-      def add_environment_variable(key, value)
+      def add_environment_variable(key, value, prevent_expanding=false)
+        if prevent_expanding
+          value = "'#{value}'"
+        end
         self << "#{key}=#{qualify_value(value)}"
       end
 

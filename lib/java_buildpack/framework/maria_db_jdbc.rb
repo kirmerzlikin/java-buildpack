@@ -33,7 +33,7 @@ module JavaBuildpack
       def release
         service = @application.services.find_service(/mysql|mariadb/)
         connection_url = service['credentials']['jdbcUrl']
-        @droplet.environment_variables.add_environment_variable('JDBC_CONNECTION_URL', connection_url)
+        @droplet.environment_variables.add_environment_variable('JDBC_CONNECTION_URL', connection_url, true)
       end
 
       private
