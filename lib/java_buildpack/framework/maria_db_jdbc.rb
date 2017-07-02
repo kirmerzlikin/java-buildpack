@@ -14,31 +14,26 @@
 # limitations under the License.
 
 require 'fileutils'
-require 'java_buildpack/component/versioned_dependency_component'
 require 'java_buildpack/framework'
 
 module JavaBuildpack
   module Framework
 
     # Encapsulates the functionality for enabling the MariaDB JDBC client.
-    class MariaDbJDBC < JavaBuildpack::Component::VersionedDependencyComponent
+    class MariaDbJDBC < JavaBuildpack::Component::BaseComponent
+
+      def detect
+        service? && driver?
+      end
 
       # (see JavaBuildpack::Component::BaseComponent#compile)
-      def compile
-        download_jar
-        @droplet.additional_libraries << (@droplet.sandbox + jar_name)
-      end
+      def compile; end
 
       # (see JavaBuildpack::Component::BaseComponent#release)
       def release
-        @droplet.additional_libraries << (@droplet.sandbox + jar_name)
-      end
-
-      protected
-
-      # (see JavaBuildpack::Component::VersionedDependencyComponent#supports?)
-      def supports?
-        service? && !driver?
+        service = @application.services.find_service(/mysql|mariadb/)
+        connection_url = service['credentials']['jdbcUrl']
+        @droplet.environment_variables.add_environment_variable('JDBC_CONNECTION_URL', connection_url)
       end
 
       private
@@ -50,7 +45,7 @@ module JavaBuildpack
       end
 
       def service?
-        [/mysql/, /mariadb/].any? { |filter| @application.services.one_service? filter, 'uri' }
+        [/mysql/, /mariadb/].any? { |filter| @application.services.one_service? filter, 'jdbcUrl' }
       end
     end
 

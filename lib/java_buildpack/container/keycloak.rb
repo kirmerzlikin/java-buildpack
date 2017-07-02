@@ -13,7 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-require 'java_buildpack/component/versioned_dependency_component'
 require 'java_buildpack/container'
 require 'java_buildpack/logging/logger_factory'
 require 'java_buildpack/util/class_file_utils'
@@ -47,9 +46,7 @@ module JavaBuildpack
       end
 
       # (see JavaBuildpack::Component::BaseComponent#compile)
-      def compile
-        @logger.info { 'Nothing to do' }
-      end
+      def compile; end
 
       # (see JavaBuildpack::Component::BaseComponent#release)
       def release

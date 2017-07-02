@@ -44,7 +44,7 @@ module JavaBuildpack
     def detect
       tags = tag_detection('container', @containers, true)
       tags.concat tag_detection('JRE', @jres, true) unless tags.empty?
-      # tags.concat tag_detection('framework', @frameworks, false) unless tags.empty?
+      tags.concat tag_detection('framework', @frameworks, false) unless tags.empty?
       tags << "java-buildpack=#{@buildpack_version.to_s false}" unless tags.empty?
       tags = tags.flatten.compact.sort
 
@@ -75,6 +75,8 @@ module JavaBuildpack
 
       commands = []
       commands << component_detection('JRE', @jres, true).first.release
+
+      component_detection('framework', @frameworks, false).map(&:release)
 
       commands << container.release
       command = commands.flatten.compact.join(' && ')
@@ -127,7 +129,7 @@ module JavaBuildpack
       components = JavaBuildpack::Util::ConfigurationUtils.load 'components'
 
       @jres       = instantiate(components['jres'], mutable_java_home, component_info)
-      # @frameworks = instantiate(components['frameworks'], immutable_java_home, component_info)
+      @frameworks = instantiate(components['frameworks'], immutable_java_home, component_info)
       @containers = instantiate(components['containers'], immutable_java_home, component_info)
     end
 
