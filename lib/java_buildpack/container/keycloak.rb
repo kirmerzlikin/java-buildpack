@@ -59,6 +59,8 @@ module JavaBuildpack
           @droplet.java_opts.as_env_var,
           'exec',
           qualify_path(@droplet.root + 'bin/standalone.sh', @droplet.root),
+          '--server-config',
+          'standalone-ha.xml',
           '-b',
           '0.0.0.0'
         ].flatten.compact.join(' ')
