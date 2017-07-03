@@ -52,6 +52,7 @@ module JavaBuildpack
       def release
         @droplet.java_opts.add_system_property 'jboss.http.port', '$PORT'
         @droplet.java_opts.add_system_property 'java.net.preferIPv4Stack', 'true'
+        @droplet.java_opts.add_system_property 'io.undertow.disable-file-system-watcher', 'true'
 
         [
           @droplet.environment_variables.as_env_vars,
