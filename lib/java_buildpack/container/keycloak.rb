@@ -42,7 +42,12 @@ module JavaBuildpack
       end
 
       def supports?
-        true
+        result = (@droplet.root + 'bin').exist? &&
+          (@droplet.root + 'modules/system/layers/keycloak').exist? &&
+          (@droplet.root + 'standalone').exist?
+        @logger.warn { 'Can not find directories /bin, /standalone and /modules/system/layers/keycloak. ' +
+          'Keycloak can not be run.' } if !result
+        result
       end
 
       # (see JavaBuildpack::Component::BaseComponent#compile)
